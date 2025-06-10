@@ -6,7 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Joao Pedro",
+  "keywords": [
+    "aula3"
+  ],
+  "author": "Victor Icoma",
   "license": "ISC",
   "dependencies": {
     "chalk": "^4.1.2"

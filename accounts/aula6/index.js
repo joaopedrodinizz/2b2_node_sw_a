@@ -23,9 +23,9 @@ function operation() {
         if (action === 'Criar conta') {
             createAccount()
         } else if (action === 'Depositar') {
-            console.log(action)
-        } else if (action === 'Consultar saldo') {
             deposit()
+        } else if (action === 'Consultar saldo') {
+            console.log(action)
         } else if (action === 'Sacar') {
             console.log(action)
         } else if (action === 'Sair') {
@@ -78,63 +78,65 @@ function buildAccount() {
             operation()
         })
 }
-function deposit(){
+function deposit() {
     inquirer.prompt([
         {
-         name:'accountName',
-         message: 'Informe o nome da conta a depositar: '   
+            name: 'accountName',
+            message: 'Informe o nome da conta a depositar: '
         }
     ]).then((answer) => {
         const accountName = answer['accountName']
-        if(checkAccount(accountName)){
-            setTimeout(Function() {
-                console.log(chalk.bgRed.Black("Esta conta não existe!"))
+        if (!checkAccount(accountName)) {
+            setTimeout(function () {
+                console.log(chalk.bgRed.black("Esta conta não existe!"))
+                return deposit()
             }, 3000)
-            
-            return deposit()
+        } else {
+            inquirer.prompt([
+                {
+                    name: 'amount',
+                    message: 'Quanto voce desja depositar?'
+                }
+            ]).then((answer) => {
+                const amount = answer['amount']
+                addAmount(accountName, amount)
+                operation()
+            })
         }
-        inquirer.prompt([
-            {
-                name:'amount',
-                message:'quanto voce deseja depostar?'
-            }
-        ]).then ((answer) => {
-            const amount = answer ['amount']
-            addAmount(accountName,amount)
-            operation()
-        })
     })
 }
-function addAmount(accountName, amount){
+function addAmount(accountName, amount) {
     const accountData = getAccount(accountName)
- 
-    if(!amount){
-        console.log(chalk.bgRed.black('Ocoreu um erro! Tente novamente mais tarde.'))
+
+    if (!amount) {
+        console.log(chalk.bgRed.black('Ocorreu um erro! tente novamente mais tarde.'))
         return deposit
     }
-    accountData.balence = parseFloat(amount) + parseFloat(accountData.balence)
- 
+
+    accountData.balance = parseFloat(amount) + parseFloat(accountData.balance)
+
     fs.writeFileSync(
-    `accounts/${accountData}`,
-    function(err){
-        console.log(err)
-    },)
-             setTimeout(function() {
+        `accounts/${accountName}.json`,
+        JSON.stringify(accountData),
+        function (err) {
+            console.log(err)
+        },
+    )
+    setTimeout(function () {
         console.log(chalk.green('Valor depositado!'))
     }, 2000)
-   
 }
-function getAccount(accountName){
+function getAccount(accountName) {
     const accountJson = fs.readFileSync(`accounts/${accountName}.json`, {
-    encoding : 'utf-8',
-    flag : 'r',
-     })
- 
-     return JSON.parse(accountJson)
-    }
-function checkAccount(accountName){
-    if(!fs.existsSync(`accounts/${accountName}.json`)){
-       return false
+        encoding: 'utf-8',
+        flag: 'r',
+    })
+
+    return JSON.parse(accountJson)
+}
+function checkAccount(accountName) {
+    if (!fs.existsSync(`accounts/${accountName}.json`)) {
+        return false
     }
     return true
 }

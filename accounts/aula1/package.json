@@ -1,14 +1,14 @@
 {
   "name": "aula1",
   "version": "1.0.0",
-  "description": "Aula 1 de javascript",
+  "description": "aula 1 de javascript",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "Aula1"
+    "aula1"
   ],
-  "author": "Joao Pedro Diniz",
+  "author": "Victor Icoma",
   "license": "MIT"
 }
